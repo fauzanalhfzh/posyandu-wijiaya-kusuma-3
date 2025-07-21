@@ -12,4 +12,9 @@ class Ibu extends Model
     protected $guarded = [];
 
     protected $table = 'ibu';
+
+    public function anak()
+    {
+        return $this->hasMany(Anak::class);
+    }
 }
