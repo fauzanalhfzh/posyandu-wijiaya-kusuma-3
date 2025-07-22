@@ -12,4 +12,9 @@ class Imunisasi extends Model
     protected $guarded = [];
 
     protected $table = 'imunisasi';
+
+    public function anak()
+    {
+        return $this->hasMany(Anak::class);
+    }
 }

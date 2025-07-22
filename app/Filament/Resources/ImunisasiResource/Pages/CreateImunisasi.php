@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateImunisasi extends CreateRecord
 {
     protected static string $resource = ImunisasiResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return ImunisasiResource::getUrl('index');
+    }
 }

@@ -16,7 +16,6 @@ return new class extends Migration
 
             $table->string('nama_lengkap');
             $table->date('tgl_lahir');
-            $table->string('jenis_kelamin');
             $table->string('tinggi_badan');
             $table->string('berat_badan');
 

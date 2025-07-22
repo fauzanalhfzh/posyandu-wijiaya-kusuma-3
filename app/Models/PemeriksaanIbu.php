@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Anak extends Model
+class PemeriksaanIbu extends Model
 {
     use SoftDeletes;
 
     protected $guarded = [];
 
-    protected $table = 'anak';
+    protected $table = 'pemeriksaan_ibu';
 
     public function ibu()
     {
@@ -21,10 +21,5 @@ class Anak extends Model
     public function bidan()
     {
         return $this->belongsTo(Bidan::class);
-    }
-
-    public function pemeriksaanAnak()
-    {
-        return $this->hasMany(PemeriksaanAnak::class);
     }
 }

@@ -13,7 +13,9 @@ class ListImunisasis extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Tambah Imunisasi')
+                ->icon('heroicon-o-plus-circle')
+                ->color('primary'),
         ];
     }
 }

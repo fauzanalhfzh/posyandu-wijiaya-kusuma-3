@@ -41,7 +41,6 @@ class ImunisasiResource extends Resource
         return $form
             ->schema([
                 Select::make('jenis_imunisasi')
-                    ->columnSpan('full')
                     ->required()
                     ->options([
                         'BCG' => 'BCG',
@@ -55,7 +54,6 @@ class ImunisasiResource extends Resource
                         'POLIO3' => 'POLIO 3',
                     ]),
                 TextInput::make('keterangan')
-                    ->columnSpan('full')
                     ->maxLength(255),
             ]);
     }
@@ -87,6 +85,7 @@ class ImunisasiResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
