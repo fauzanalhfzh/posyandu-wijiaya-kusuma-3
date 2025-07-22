@@ -24,6 +24,8 @@ class IbuResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = -3;
+
     protected static ?string $navigationGroup = 'Kelola Data';
 
     protected static ?string $label = "Kelola Data Ibu";
@@ -45,17 +47,10 @@ class IbuResource extends Resource
         return $form
             ->schema([
                 TextInput::make('nama_lengkap')
-                    ->columnSpan('full')
                     ->required()
                     ->maxLength(255),
                 DatePicker::make('tgl_lahir')
                     ->required(),
-                Select::make('jenis_kelamin')
-                    ->required()
-                    ->options([
-                        'pria' => 'Pria',
-                        'wanita' => 'Wanita',
-                    ]),
                 TextInput::make('tinggi_badan')
                     ->required()
                     ->maxLength(255),
@@ -73,8 +68,6 @@ class IbuResource extends Resource
                     ->searchable(),
                 TextColumn::make('tgl_lahir')
                     ->searchable(),
-                TextColumn::make('jenis_kelamin')
-                    ->searchable(),
                 TextColumn::make('tinggi_badan')
                     ->searchable(),
                 TextColumn::make('berat_badan')
@@ -86,6 +79,7 @@ class IbuResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

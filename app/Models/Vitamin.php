@@ -12,4 +12,9 @@ class Vitamin extends Model
     protected $guarded = [];
 
     protected $table = 'vitamin';
+
+    public function pemeriksaanAnak()
+    {
+        return $this->hasMany(PemeriksaanAnak::class);
+    }
 }

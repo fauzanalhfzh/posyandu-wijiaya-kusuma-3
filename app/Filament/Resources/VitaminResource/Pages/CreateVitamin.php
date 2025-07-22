@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateVitamin extends CreateRecord
 {
     protected static string $resource = VitaminResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return VitaminResource::getUrl('index');
+    }
 }

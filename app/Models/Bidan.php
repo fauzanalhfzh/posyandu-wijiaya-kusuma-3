@@ -12,4 +12,14 @@ class Bidan extends Model
     protected $guarded = [];
 
     protected $table = 'bidan';
+
+    public function pemeriksaanAnak()
+    {
+        return $this->hasMany(PemeriksaanAnak::class);
+    }
+
+    public function pemeriksaanIbu()
+    {
+        return $this->hasMany(PemeriksaanIbu::class);
+    }
 }
