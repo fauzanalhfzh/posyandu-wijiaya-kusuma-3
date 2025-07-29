@@ -35,7 +35,7 @@ class PemeriksaanAnakStatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-calendar-days')
                 ->color('success'),
 
-            Stat::make('Anak Unik Diperiksa', $totalAnakUnik)
+            Stat::make('Jumlah Anak Berbeda', $totalAnakUnik)
                 ->description('Jumlah anak berbeda yang diperiksa')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('info'),

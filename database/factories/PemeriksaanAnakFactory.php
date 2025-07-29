@@ -7,6 +7,8 @@ use App\Models\Bidan;
 use App\Models\Imunisasi;
 use App\Models\Vitamin;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Carbon\Carbon;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PemeriksaanAnak>
@@ -26,7 +28,10 @@ class PemeriksaanAnakFactory extends Factory
             'imunisasi_id' => Imunisasi::inRandomOrder()->first()?->id ?? Imunisasi::factory(),
             'vitamin_id' => Vitamin::inRandomOrder()->first()?->id ?? Vitamin::factory(),
 
-            'tanggal_pemeriksaan' => $this->faker->date(),
+            'tanggal_pemeriksaan' => $this->faker->dateTimeBetween(
+                startDate: Carbon::now()->startOfYear(),
+                endDate: Carbon::now()->endOfMonth()
+            )->format('Y-m-d'),
             'usia_balita' => $this->faker->numberBetween(0, 60), // usia dalam bulan
             'berat_badan' => $this->faker->numberBetween(5, 25), // dalam kg
             'saran' => $this->faker->optional()->sentence(),

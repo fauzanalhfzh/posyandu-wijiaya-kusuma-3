@@ -33,8 +33,8 @@ class PemeriksaanIbuStatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-calendar-days')
                 ->color('success'),
 
-            Stat::make('Ibu Unik Diperiksa', $totalIbuUnik)
-                ->description('Jumlah ibu berbeda yang diperiksa')
+            Stat::make('Jumlah Ibu Berbeda', $totalIbuUnik)
+                ->description('Jumlah ibu berbeda yang diperiksa tahun ini')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('info'),
 
