@@ -14,6 +14,10 @@ class PemeriksaanAnak extends Model
 
     protected $table = 'pemeriksaan_anak';
 
+    protected $casts = [
+        'tanggal_pemeriksaan' => 'date',
+    ];
+
     public function anak()
     {
         return $this->belongsTo(Anak::class);

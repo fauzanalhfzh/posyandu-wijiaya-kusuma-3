@@ -6,6 +6,7 @@ use App\Filament\Resources\AnakResource\Pages;
 use App\Filament\Resources\AnakResource\RelationManagers;
 use App\Models\Anak;
 use App\Models\Ibu;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -45,6 +46,7 @@ class AnakResource extends Resource
                 Select::make('ibu_id')
                     ->label('Nama Ibu')
                     ->columnSpan('full')
+                    ->searchable()
                     ->required()
                     ->options(Ibu::all()->pluck('nama_lengkap', 'id')),
                 TextInput::make('nama_lengkap')
@@ -66,15 +68,20 @@ class AnakResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('ibu_id')
-                    ->numeric()
+                TextColumn::make('ibu.nama_lengkap')
+                    ->label('Nama Ibu')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('nama_lengkap')
+                    ->label('Nama Anak')
                     ->searchable(),
                 TextColumn::make('tgl_lahir')
+                    ->label('Tanggal Lahir')
+                    ->dateFormat('d-m-Y')
                     ->date()
                     ->sortable(),
                 TextColumn::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
                     ->searchable(),
             ])
             ->filters([

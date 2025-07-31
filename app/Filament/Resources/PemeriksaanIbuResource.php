@@ -14,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -138,6 +139,12 @@ class PemeriksaanIbuResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('Cetak')
+                    ->label('Print')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn($record) => route('pemeriksaan-ibu.cetak', $record->id))
+                    ->openUrlInNewTab()
+                    ->color('success'),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
