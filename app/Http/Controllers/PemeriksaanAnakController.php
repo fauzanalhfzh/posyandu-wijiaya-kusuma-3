@@ -12,7 +12,7 @@ class PemeriksaanAnakController extends Controller
     {
         $pemeriksaan = PemeriksaanAnak::with(['anak', 'bidan', 'imunisasi', 'vitamin'])->findOrFail($id);
 
-        $html = view('generate-pdf.kms-anak-pdf', compact('pemeriksaan'))->render();
+        $html = view('pemeriksaan-anak.kms-anak-pdf', compact('pemeriksaan'))->render();
 
         $mpdf = new Mpdf();
         $mpdf->WriteHTML($html);
@@ -28,7 +28,7 @@ class PemeriksaanAnakController extends Controller
         $minUsia = $data->min('usia_balita');
         $maxUsia = $data->max('usia_balita');
 
-        $html = view('generate-pdf.laporan-anak-pdf', compact('data', 'total', 'avgBerat', 'minUsia', 'maxUsia'))->render();
+        $html = view('pemeriksaan-anak.laporan-anak-pdf', compact('data', 'total', 'avgBerat', 'minUsia', 'maxUsia'))->render();
 
         $mpdf = new Mpdf(['orientation' => 'L']); // Lanskap untuk tabel lebar
         $mpdf->WriteHTML($html);
