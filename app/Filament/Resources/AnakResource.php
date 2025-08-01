@@ -77,7 +77,6 @@ class AnakResource extends Resource
                     ->searchable(),
                 TextColumn::make('tgl_lahir')
                     ->label('Tanggal Lahir')
-                    ->dateFormat('d-m-Y')
                     ->date()
                     ->sortable(),
                 TextColumn::make('jenis_kelamin')
