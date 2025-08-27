@@ -61,6 +61,7 @@ class PemeriksaanAnakResource extends Resource
                     ->required()
                     ->options(Vitamin::all()->pluck('jenis_vitamin', 'id')),
                 DatePicker::make('tanggal_pemeriksaan')
+                    ->minDate(now())
                     ->required(),
                 TextInput::make('usia_balita')
                     ->label('Usia Balita (bulan)')

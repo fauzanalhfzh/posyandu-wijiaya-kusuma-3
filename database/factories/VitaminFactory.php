@@ -24,7 +24,8 @@ class VitaminFactory extends Factory
                 'Vitamin B12',
                 'Vitamin C',
                 'Vitamin D',
-                'Vitamin E'
+                'Vitamin E',
+
             ]),
             'keterangan' => $this->faker->optional()->sentence(),
             'created_at' => now(),

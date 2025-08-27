@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('anak_id')->constrained('anak')->onDelete('cascade');
             $table->foreignId('bidan_id')->constrained('bidan')->onDelete('cascade');
-            $table->foreignId('imunisasi_id')->constrained('imunisasi')->onDelete('cascade');
-            $table->foreignId('vitamin_id')->constrained('vitamin')->onDelete('cascade');
+            $table->foreignId('imunisasi_id')->constrained('imunisasi')->onDelete('cascade')->nullable();
+            $table->foreignId('vitamin_id')->constrained('vitamin')->onDelete('cascade')->nullable();
             $table->date('tanggal_pemeriksaan');
             $table->integer('usia_balita');
             $table->integer('berat_badan');
