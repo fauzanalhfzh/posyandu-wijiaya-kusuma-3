@@ -40,19 +40,8 @@ class ImunisasiResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('jenis_imunisasi')
-                    ->required()
-                    ->options([
-                        'BCG' => 'BCG',
-                        'CAMPAK' => 'CAMPAK',
-                        'DPT1' => 'DPT 1',
-                        'DPT2' => 'DPT 2',
-                        'DPT3' => 'DPT 3',
-                        'POLIO1' => 'POLIO 1',
-                        'POLIO2' => 'POLIO 2',
-                        'POLIO3' => 'POLIO 3',
-                        'POLIO3' => 'POLIO 3',
-                    ]),
+                TextInput::make('jenis_imunisasi')
+                    ->required(),
                 TextInput::make('keterangan')
                     ->maxLength(255),
             ]);

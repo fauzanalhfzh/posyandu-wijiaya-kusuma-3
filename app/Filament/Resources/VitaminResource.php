@@ -39,22 +39,8 @@ class VitaminResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('jenis_vitamin')
-                    ->required()
-                    ->options([
-                        'VITAMIN A' => 'Vitamin A',
-                        'VITAMIN B1' => 'Vitamin B1',
-                        'VITAMIN B6' => 'Vitamin B6',
-                        'VITAMIN B12' => 'Vitamin B12',
-                        'VITAMIN C' => 'Vitamin C',
-                        'VITAMIN D' => 'Vitamin D',
-                        'VITAMIN E' => 'Vitamin E',
-                        'VITAMIN K' => 'Vitamin K',
-                        'MULTIVITAMIN' => 'Multivitamin',
-                        'FERO SULFAT' => 'Fero Sulfat (Zat Besi)',
-                        'ZINC' => 'Zinc',
-                        'OMEGA_3' => 'Omega 3',
-                    ]),
+                TextInput::make('jenis_vitamin')
+                    ->required(),
                 TextInput::make('keterangan')
                     ->maxLength(255),
             ]);
