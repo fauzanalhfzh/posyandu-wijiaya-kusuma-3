@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PemeriksaanAnakResource\Pages;
-use App\Filament\Resources\PemeriksaanAnakResource\RelationManagers;
 use App\Models\Anak;
 use App\Models\Bidan;
 use App\Models\Imunisasi;
@@ -45,27 +44,17 @@ class PemeriksaanAnakResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('anak_id')
-                    ->label('Nama Anak')
+                DatePicker::make('tanggal_pemeriksaan')
+                    ->label('Tanggal Pemeriksaan')
                     ->required()
-                    ->options(Anak::all()->pluck('nama_lengkap', 'id'))
                     ->afterStateUpdated(function (callable $set, $state, $get) {
-                        // Debugging: Menulis data ke log
-                        logger()->info('State anak_id:', ['state' => $state, 'tanggal_pemeriksaan' => $get('tanggal_pemeriksaan'), 'anak' => Anak::find($state)]);
+                        logger()->info('State tanggal_pemeriksaan:', ['state' => $state, 'anak_id' => $get('anak_id')]);
 
-                        // Mengambil data anak berdasarkan anak_id
-                        $anak = Anak::find($state);
+                        $anak = Anak::find($get('anak_id'));
 
                         if ($anak) {
-                            // Menghitung usia balita berdasarkan tanggal lahir dan tanggal pemeriksaan
                             $tglLahir = Carbon::parse($anak->tgl_lahir);
-
-                            // Mendapatkan tanggal pemeriksaan, jika ada
-                            $tanggalPemeriksaan = $get('tanggal_pemeriksaan')
-                                ? Carbon::parse($get('tanggal_pemeriksaan'))
-                                : Carbon::now(); // Jika tanggal pemeriksaan tidak diisi, gunakan tanggal saat ini
-
-                            // Menghitung usia balita dalam bulan (selisih bulan antara tanggal lahir dan tanggal pemeriksaan)
+                            $tanggalPemeriksaan = Carbon::parse($state);
                             $usiaBalita = $tglLahir->diffInMonths($tanggalPemeriksaan);
 
                             // Set usia balita secara otomatis
@@ -73,32 +62,25 @@ class PemeriksaanAnakResource extends Resource
                         }
                     }),
 
-                DatePicker::make('tanggal_pemeriksaan')
-                    ->minDate(now()) // Pastikan tanggal minimum adalah hari ini
+                Select::make('anak_id')
+                    ->label('Nama Anak')
                     ->required()
+                    ->options(Anak::all()->pluck('nama_lengkap', 'id'))
                     ->afterStateUpdated(function (callable $set, $state, $get) {
-                        // Debugging: Menampilkan data yang diambil setelah tanggal_pemeriksaan diupdate
-                        dd(
-                            'State tanggal_pemeriksaan:',
-                            $state,
-                            'Anak ID:',
-                            $get('anak_id'),
-                            'Anak Data:',
-                            Anak::find($get('anak_id'))
-                        );
+                        logger()->info('State anak_id:', ['state' => $state, 'tanggal_pemeriksaan' => $get('tanggal_pemeriksaan'), 'anak' => Anak::find($state)]);
 
-                        // Mengambil data anak berdasarkan anak_id untuk menghitung usia balita setelah tanggal_pemeriksaan diperbarui
-                        $anak = Anak::find($get('anak_id')); // Mengambil anak_id saat ini
+                        $anak = Anak::find($state);
 
                         if ($anak) {
-                            // Menghitung usia balita berdasarkan tanggal lahir dan tanggal pemeriksaan
                             $tglLahir = Carbon::parse($anak->tgl_lahir);
+                            $tanggalPemeriksaan = $get('tanggal_pemeriksaan')
+                                ? Carbon::parse($get('tanggal_pemeriksaan'))
+                                : Carbon::now();
 
-                            // Mengambil tanggal pemeriksaan yang baru
-                            $tanggalPemeriksaan = Carbon::parse($state);
-
-                            // Menghitung usia balita dalam bulan (selisih bulan antara tanggal lahir dan tanggal pemeriksaan)
                             $usiaBalita = $tglLahir->diffInMonths($tanggalPemeriksaan);
+
+                            // Log hasil perhitungan usia balita
+                            logger()->info('Usia Balita:', ['usia_balita' => $usiaBalita]);
 
                             // Set usia balita secara otomatis
                             $set('usia_balita', $usiaBalita);
@@ -107,23 +89,32 @@ class PemeriksaanAnakResource extends Resource
 
                 TextInput::make('usia_balita')
                     ->label('Usia Balita (bulan)')
-                    ->required()
                     ->numeric()
-                    ->disabled(), // Non-editable karena dihitung otomatis
+                    ->required()
+                    ->reactive()
+                    ->disabled(),
+
                 Select::make('bidan_id')
                     ->label('Nama Bidan')
                     ->required()
                     ->options(Bidan::all()->pluck('nama_lengkap', 'id')),
+
                 Select::make('imunisasi_id')
                     ->label('Jenis Imunisasi')
                     ->required()
                     ->options(Imunisasi::all()->pluck('jenis_imunisasi', 'id')),
+
                 Select::make('vitamin_id')
                     ->label('Jenis Vitamin')
                     ->required()
                     ->options(Vitamin::all()->pluck('jenis_vitamin', 'id')),
+
                 TextInput::make('berat_badan')
                     ->label('Berat Badan (kg)')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('tinggi_badan')
+                    ->label('Tinggi Badan (cm)')
                     ->required()
                     ->numeric(),
                 TextInput::make('saran')
@@ -139,37 +130,50 @@ class PemeriksaanAnakResource extends Resource
                 Tables\Columns\TextColumn::make('anak.nama_lengkap')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('bidan.nama_lengkap')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('imunisasi.jenis_imunisasi')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('vitamin.jenis_vitamin')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('tanggal_pemeriksaan')
                     ->searchable()
                     ->date()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('usia_balita')
                     ->searchable()
                     ->suffix(' bulan')
                     ->numeric()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('berat_badan')
                     ->searchable()
                     ->suffix(' kg')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tinggi_badan')
+                    ->searchable()
+                    ->suffix('cm')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -185,6 +189,7 @@ class PemeriksaanAnakResource extends Resource
                     ->url(fn($record) => route('pemeriksaan-anak.cetak', $record->id))
                     ->openUrlInNewTab()
                     ->color('success'),
+
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

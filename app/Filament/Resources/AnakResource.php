@@ -6,7 +6,7 @@ use App\Filament\Resources\AnakResource\Pages;
 use App\Filament\Resources\AnakResource\RelationManagers;
 use App\Models\Anak;
 use App\Models\Ibu;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -90,6 +90,12 @@ class AnakResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Action::make('cetak_pemeriksaan')
+                    ->label('Cetak Pemeriksaan')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn(Anak $record) => route('cetak.pemeriksaan', ['id' => $record->id])) // Ganti dengan route cetak yang sesuai
+                    ->openUrlInNewTab()
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

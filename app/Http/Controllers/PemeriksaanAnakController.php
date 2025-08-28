@@ -18,6 +18,7 @@ class PemeriksaanAnakController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output('kms-' . $pemeriksaan->anak->nama . '.pdf', 'I');
     }
+
     public function cetakLaporan()
     {
         $data = PemeriksaanAnak::with(['anak', 'bidan', 'imunisasi', 'vitamin'])->get();

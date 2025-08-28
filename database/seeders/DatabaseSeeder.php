@@ -7,7 +7,6 @@ use App\Models\Imunisasi;
 use App\Models\PemeriksaanAnak;
 use App\Models\User;
 use App\Models\Vitamin;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,13 +17,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            IbuSeeder::class,
-            AnakSeeder::class,
-            BidanSeeder::class,
-            VitaminSeeder::class,
-            ImunisasiSeeder::class,
-            PemeriksaanAnakSeeder::class,
-            PemeriksaanIbuSeeder::class,
+            // IbuSeeder::class,
+            // AnakSeeder::class,
+            // BidanSeeder::class,
+            // VitaminSeeder::class,
+            // ImunisasiSeeder::class,
+            // PemeriksaanAnakSeeder::class,
+            // PemeriksaanIbuSeeder::class,
             AdminUserSeeder::class,
         ]);
     }

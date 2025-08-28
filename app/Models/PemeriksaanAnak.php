@@ -39,16 +39,20 @@ class PemeriksaanAnak extends Model
         return $this->belongsTo(Imunisasi::class);
     }
 
-    public function getUsiaBalitaAttribute()
+    protected static function booted()
     {
-        // Mengakses tanggal lahir dari relasi anak
-        $anak = $this->anak; // Relasi ke model Anak
+        static::creating(function ($pemeriksaanAnak) {
+            // Menghitung usia balita sebelum menyimpan
+            if ($pemeriksaanAnak->anak_id && $pemeriksaanAnak->tanggal_pemeriksaan) {
+                $anak = Anak::find($pemeriksaanAnak->anak_id);
+                $tanggalPemeriksaan = Carbon::parse($pemeriksaanAnak->tanggal_pemeriksaan);
 
-        if ($anak && $anak->tgl_lahir) {
-            // Menghitung usia balita berdasarkan tanggal lahir
-            return Carbon::parse($anak->tgl_lahir)->age * 12; // Menghitung usia dalam bulan
-        }
-
-        return null; // Jika anak tidak ada atau tanggal lahir tidak ada
+                if ($anak) {
+                    $tglLahir = Carbon::parse($anak->tgl_lahir);
+                    $usiaBalita = $tglLahir->diffInMonths($tanggalPemeriksaan);
+                    $pemeriksaanAnak->usia_balita = $usiaBalita;
+                }
+            }
+        });
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnakController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PemeriksaanAnakController;
 use App\Http\Controllers\PemeriksaanIbuController;
@@ -9,3 +10,5 @@ Route::get('/laporan/pemeriksaan-anak', [PemeriksaanAnakController::class, 'ceta
 
 Route::get('/pemeriksaan-ibu/{id}/cetak', [PemeriksaanIbuController::class, 'cetakKartu'])->name('pemeriksaan-ibu.cetak');
 Route::get('/laporan/pemeriksaan-ibu', [PemeriksaanIbuController::class, 'cetakLaporan'])->name('laporan.pemeriksaan-ibu');
+
+Route::get('/cetak-pemeriksaan/{id}', [AnakController::class, 'cetak'])->name('cetak.pemeriksaan');
