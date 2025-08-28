@@ -9,6 +9,7 @@ use App\Models\Bidan;
 use App\Models\Imunisasi;
 use App\Models\PemeriksaanAnak;
 use App\Models\Vitamin;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -47,7 +48,68 @@ class PemeriksaanAnakResource extends Resource
                 Select::make('anak_id')
                     ->label('Nama Anak')
                     ->required()
-                    ->options(Anak::all()->pluck('nama_lengkap', 'id')),
+                    ->options(Anak::all()->pluck('nama_lengkap', 'id'))
+                    ->afterStateUpdated(function (callable $set, $state, $get) {
+                        // Debugging: Menulis data ke log
+                        logger()->info('State anak_id:', ['state' => $state, 'tanggal_pemeriksaan' => $get('tanggal_pemeriksaan'), 'anak' => Anak::find($state)]);
+
+                        // Mengambil data anak berdasarkan anak_id
+                        $anak = Anak::find($state);
+
+                        if ($anak) {
+                            // Menghitung usia balita berdasarkan tanggal lahir dan tanggal pemeriksaan
+                            $tglLahir = Carbon::parse($anak->tgl_lahir);
+
+                            // Mendapatkan tanggal pemeriksaan, jika ada
+                            $tanggalPemeriksaan = $get('tanggal_pemeriksaan')
+                                ? Carbon::parse($get('tanggal_pemeriksaan'))
+                                : Carbon::now(); // Jika tanggal pemeriksaan tidak diisi, gunakan tanggal saat ini
+
+                            // Menghitung usia balita dalam bulan (selisih bulan antara tanggal lahir dan tanggal pemeriksaan)
+                            $usiaBalita = $tglLahir->diffInMonths($tanggalPemeriksaan);
+
+                            // Set usia balita secara otomatis
+                            $set('usia_balita', $usiaBalita);
+                        }
+                    }),
+
+                DatePicker::make('tanggal_pemeriksaan')
+                    ->minDate(now()) // Pastikan tanggal minimum adalah hari ini
+                    ->required()
+                    ->afterStateUpdated(function (callable $set, $state, $get) {
+                        // Debugging: Menampilkan data yang diambil setelah tanggal_pemeriksaan diupdate
+                        dd(
+                            'State tanggal_pemeriksaan:',
+                            $state,
+                            'Anak ID:',
+                            $get('anak_id'),
+                            'Anak Data:',
+                            Anak::find($get('anak_id'))
+                        );
+
+                        // Mengambil data anak berdasarkan anak_id untuk menghitung usia balita setelah tanggal_pemeriksaan diperbarui
+                        $anak = Anak::find($get('anak_id')); // Mengambil anak_id saat ini
+
+                        if ($anak) {
+                            // Menghitung usia balita berdasarkan tanggal lahir dan tanggal pemeriksaan
+                            $tglLahir = Carbon::parse($anak->tgl_lahir);
+
+                            // Mengambil tanggal pemeriksaan yang baru
+                            $tanggalPemeriksaan = Carbon::parse($state);
+
+                            // Menghitung usia balita dalam bulan (selisih bulan antara tanggal lahir dan tanggal pemeriksaan)
+                            $usiaBalita = $tglLahir->diffInMonths($tanggalPemeriksaan);
+
+                            // Set usia balita secara otomatis
+                            $set('usia_balita', $usiaBalita);
+                        }
+                    }),
+
+                TextInput::make('usia_balita')
+                    ->label('Usia Balita (bulan)')
+                    ->required()
+                    ->numeric()
+                    ->disabled(), // Non-editable karena dihitung otomatis
                 Select::make('bidan_id')
                     ->label('Nama Bidan')
                     ->required()
@@ -60,13 +122,6 @@ class PemeriksaanAnakResource extends Resource
                     ->label('Jenis Vitamin')
                     ->required()
                     ->options(Vitamin::all()->pluck('jenis_vitamin', 'id')),
-                DatePicker::make('tanggal_pemeriksaan')
-                    ->minDate(now())
-                    ->required(),
-                TextInput::make('usia_balita')
-                    ->label('Usia Balita (bulan)')
-                    ->required()
-                    ->numeric(),
                 TextInput::make('berat_badan')
                     ->label('Berat Badan (kg)')
                     ->required()
