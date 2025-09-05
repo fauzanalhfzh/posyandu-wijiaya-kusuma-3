@@ -189,7 +189,6 @@ class PemeriksaanAnakResource extends Resource
                     ->url(fn($record) => route('pemeriksaan-anak.cetak', $record->id))
                     ->openUrlInNewTab()
                     ->color('success'),
-
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

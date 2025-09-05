@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\IbuResource\Pages;
 use App\Filament\Resources\IbuResource\RelationManagers;
 use App\Models\Ibu;
+use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -77,6 +78,12 @@ class IbuResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('cetak_pemeriksaan_ibu')
+                    ->label('Cetak Pemeriksaan Ibu')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn(Ibu $record) => route('laporan-pemeriksaan-ibu', ['id' => $record->id])) // Sesuaikan dengan route yang ada
+                    ->openUrlInNewTab()
+                    ->color('success'),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
