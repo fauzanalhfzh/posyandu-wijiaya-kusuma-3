@@ -10,17 +10,21 @@ class IbuController extends Controller
 {
     public function cetak($id)
     {
-        // Cek apakah ibu ada
+        \Log::info("Mencoba mencetak laporan untuk ibu dengan ID: " . $id);
+
+        // Ambil data ibu
         $ibu = Ibu::with(['pemeriksaanIbu' => function ($query) {
             $query->with(['bidan']);
         }])->find($id);
 
         if (!$ibu) {
+            \Log::error("Ibu dengan ID $id tidak ditemukan.");
             return abort(404, 'Ibu tidak ditemukan.');
         }
 
         // Pastikan ibu memiliki pemeriksaan
         if ($ibu->pemeriksaanIbu->isEmpty()) {
+            \Log::error("Ibu dengan ID $id tidak memiliki riwayat pemeriksaan.");
             return abort(404, 'Riwayat pemeriksaan untuk ibu ini tidak ditemukan.');
         }
 
