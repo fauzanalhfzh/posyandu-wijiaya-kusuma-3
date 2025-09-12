@@ -7,6 +7,7 @@ use App\Filament\Resources\PemeriksaanIbuResource\RelationManagers;
 use App\Models\Bidan;
 use App\Models\Ibu;
 use App\Models\PemeriksaanIbu;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -42,16 +43,52 @@ class PemeriksaanIbuResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('ibu_id')
-                    ->label('Nama Ibu')
-                    ->required()
-                    ->options(Ibu::all()->pluck('nama_lengkap', 'id')),
                 Select::make('bidan_id')
                     ->label('Nama Bidan')
                     ->required()
                     ->options(Bidan::all()->pluck('nama_lengkap', 'id')),
                 DatePicker::make('tanggal_pemeriksaan')
-                    ->required(),
+                    ->label('Tanggal Pemeriksaan')
+                    ->required()
+                    ->afterStateUpdated(function (callable $set, $state, $get) {
+                        logger()->info('State tanggal_pemeriksaan:', ['state' => $state, 'ibu_id' => $get('ibu_id')]);
+
+                        $ibu = Ibu::find($get('ibu_id'));
+
+                        if ($ibu) {
+                            $tglLahir = Carbon::parse($ibu->tgl_lahir); // Get the birthdate of the mother
+                            $tanggalPemeriksaan = Carbon::parse($state); // Get the exam date
+
+                            $usiaIbu = $tglLahir->diffInYears($tanggalPemeriksaan); // Calculate the age in years
+
+                            // Set usia_ibu field automatically
+                            $set('usia_ibu', $usiaIbu);
+                        }
+                    }),
+                Select::make('ibu_id')
+                    ->label('Nama Ibu')
+                    ->required()
+                    ->options(Ibu::all()->pluck('nama_lengkap', 'id'))
+                    ->afterStateUpdated(function (callable $set, $state, $get) {
+                        logger()->info('State ibu_id:', ['state' => $state, 'tanggal_pemeriksaan' => $get('tanggal_pemeriksaan'), 'ibu' => Ibu::find($state)]);
+
+                        $ibu = Ibu::find($state);
+
+                        if ($ibu) {
+                            $tglLahir = Carbon::parse($ibu->tgl_lahir); // Get the birthdate of the mother
+                            $tanggalPemeriksaan = $get('tanggal_pemeriksaan')
+                                ? Carbon::parse($get('tanggal_pemeriksaan'))
+                                : Carbon::now(); // Use the current date if no exam date is set
+
+                            $usiaIbu = $tglLahir->diffInYears($tanggalPemeriksaan); // Calculate the age in years
+
+                            // Log the result
+                            logger()->info('Usia Ibu:', ['usia_ibu' => $usiaIbu]);
+
+                            // Set usia_ibu field automatically
+                            $set('usia_ibu', $usiaIbu);
+                        }
+                    }),
                 TextInput::make('keluhan')
                     ->required()
                     ->maxLength(255),
@@ -66,6 +103,12 @@ class PemeriksaanIbuResource extends Resource
                 TextInput::make('tekanan_darah')
                     ->required()
                     ->maxLength(255),
+                TextInput::make('usia_ibu')
+                    ->label('Usia Ibu (tahun)')
+                    ->numeric()
+                    ->required()
+                    ->reactive()
+                    ->disabled(),
                 TextInput::make('usia_kehamilan')
                     ->label('Usia Kehamilan (minggu)')
                     ->required()
@@ -113,6 +156,10 @@ class PemeriksaanIbuResource extends Resource
                     ->suffix(' minggu')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('usia_ibu')
+                    ->suffix(' tahun')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tinggi_fundus')
                     ->numeric()
                     ->sortable(),
@@ -142,7 +189,7 @@ class PemeriksaanIbuResource extends Resource
                 Action::make('Cetak')
                     ->label('Print')
                     ->icon('heroicon-o-printer')
-                    ->url(fn($record) => route('pemeriksaan-ibu.cetak', $record->id))
+                    ->url(fn($record) => route('cetak.pemeriksaan-ibu', $record->id))
                     ->openUrlInNewTab()
                     ->color('success'),
                 Tables\Actions\ViewAction::make(),

@@ -18,4 +18,9 @@ class Ibu extends Model
     {
         return $this->hasMany(Anak::class);
     }
+
+    public function pemeriksaanIbu()
+    {
+        return $this->hasMany(PemeriksaanIbu::class);
+    }
 }

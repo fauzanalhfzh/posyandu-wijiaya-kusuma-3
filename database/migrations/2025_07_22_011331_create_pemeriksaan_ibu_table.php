@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('berat_badan')->nullable();
             $table->string('tinggi_badan')->nullable();
             $table->string('tekanan_darah')->nullable();
+            $table->integer('usia_ibu')->nullable();
             $table->integer('usia_kehamilan')->nullable();
             $table->integer('tinggi_fundus')->nullable();
             $table->string('letak_janin')->nullable();

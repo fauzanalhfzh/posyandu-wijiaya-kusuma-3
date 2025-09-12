@@ -17,8 +17,8 @@ class ListPemeriksaanIbus extends ListRecords
             Actions\CreateAction::make()->label('Tambah Pemeriksaan Ibu')
                 ->icon('heroicon-o-plus-circle')
                 ->color('primary'),
-            Action::make('Print Laporan')
-                ->label('Cetak Laporan')
+            Action::make('Print Laporan Bulan Ini')
+                ->label('Cetak Laporan Bulan Ini')
                 ->icon('heroicon-o-document-text')
                 ->url(route('laporan.pemeriksaan-ibu'))
                 ->openUrlInNewTab()
