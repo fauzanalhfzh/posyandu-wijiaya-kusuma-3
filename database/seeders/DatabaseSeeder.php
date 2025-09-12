@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             BidanSeeder::class,
             VitaminSeeder::class,
             ImunisasiSeeder::class,
-            PemeriksaanAnakSeeder::class,
-            PemeriksaanIbuSeeder::class,
+            // PemeriksaanAnakSeeder::class,
+            // PemeriksaanIbuSeeder::class,
             AdminUserSeeder::class,
         ]);
     }
