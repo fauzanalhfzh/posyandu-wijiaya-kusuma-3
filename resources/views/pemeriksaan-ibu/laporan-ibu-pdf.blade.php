@@ -53,6 +53,7 @@
 <body>
     <h2>Laporan Pemeriksaan Ibu</h2>
     <h4>Posyandu Wijaya Kusuma 3</h4>
+    <h4>Bulan: {{ \Carbon\Carbon::createFromFormat('m', $bulan)->format('F Y') }}</h4>
 
     <div class="statistik">
         <h4>Statistik</h4>

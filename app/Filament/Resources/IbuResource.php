@@ -78,12 +78,12 @@ class IbuResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // Action::make('cetak_pemeriksaan_ibu')
-                //     ->label('Cetak Pemeriksaan Ibu')
-                //     ->icon('heroicon-o-printer')
-                //     ->url(fn(Ibu $record) => route('laporan.pemeriksaan-ibu', ['id' => $record->id])) // Sesuaikan dengan route yang ada
-                //     ->openUrlInNewTab()
-                //     ->color('success'),
+                Action::make('cetak_pemeriksaan_ibu')
+                    ->label('Cetak Pemeriksaan Ibu')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn(Ibu $record) => route('laporan.pemeriksaan-ibu', ['id' => $record->id])) // Sesuaikan dengan route yang ada
+                    ->openUrlInNewTab()
+                    ->color('success'),
                 Action::make('cetak')
                     ->label('Cetak KMS Ibu') // Action label
                     ->icon('heroicon-o-printer') // Icon for the action

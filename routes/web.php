@@ -10,7 +10,7 @@ Route::get('/pemeriksaan-anak/{id}/cetak', [PemeriksaanAnakController::class, 'c
 Route::get('/laporan/pemeriksaan-anak', [PemeriksaanAnakController::class, 'cetakLaporan'])->name('laporan.pemeriksaan-anak');
 
 Route::get('/pemeriksaan-ibu/{id}/cetak', [PemeriksaanIbuController::class, 'cetakKartu'])->name('pemeriksaan-ibu.cetak');
-Route::get('/laporan/pemeriksaan-ibu', [PemeriksaanIbuController::class, 'cetakLaporan'])->name('laporan.pemeriksaan-ibu');
+Route::get('/laporan/pemeriksaan-ibu/{month?}', [PemeriksaanIbuController::class, 'cetakLaporan'])->name('laporan.pemeriksaan-ibu');
 
 Route::get('/cetak-pemeriksaan-anak/{id}', [AnakController::class, 'cetak'])->name('cetak.pemeriksaan-anak');
 Route::get('/cetak-pemeriksaan-ibu/{id}', [IbuController::class, 'cetak'])->name('cetak.pemeriksaan-ibu');

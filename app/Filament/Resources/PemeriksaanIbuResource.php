@@ -186,11 +186,11 @@ class PemeriksaanIbuResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Action::make('Cetak')
-                    ->label('Print')
-                    ->icon('heroicon-o-printer')
-                    ->url(fn($record) => route('cetak.pemeriksaan-ibu', $record->id))
-                    ->openUrlInNewTab()
+                Action::make('cetak')
+                    ->label('print') // Action label
+                    ->icon('heroicon-o-printer') // Icon for the action
+                    ->url(fn($record) => route('cetak.pemeriksaan-ibu', $record->id)) // URL to the PDF generation route
+                    ->openUrlInNewTab() // Open the PDF in a new tab
                     ->color('success'),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
