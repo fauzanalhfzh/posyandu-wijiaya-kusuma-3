@@ -16,6 +16,7 @@ class ListIbus extends ListRecords
             Actions\CreateAction::make()->label('Tambah Ibu')
                 ->icon('heroicon-o-plus-circle')
                 ->color('primary'),
+
         ];
     }
 }

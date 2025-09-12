@@ -14,7 +14,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -79,21 +78,22 @@ class IbuResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Action::make('cetak_pemeriksaan_ibu')
-                    ->label('Cetak Pemeriksaan Ibu')
-                    ->icon('heroicon-o-printer')
-                    ->url(fn(Ibu $record) => route('laporan-pemeriksaan-ibu', ['id' => $record->id])) // Sesuaikan dengan route yang ada
-                    ->openUrlInNewTab()
-                    ->color('success'),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Action::make('cetak_pemeriksaan_ibu')
+                //     ->label('Cetak Pemeriksaan Ibu')
+                //     ->icon('heroicon-o-printer')
+                //     ->url(fn(Ibu $record) => route('laporan.pemeriksaan-ibu', ['id' => $record->id])) // Sesuaikan dengan route yang ada
+                //     ->openUrlInNewTab()
+                //     ->color('success'),
                 Action::make('cetak')
                     ->label('Cetak KMS Ibu') // Action label
                     ->icon('heroicon-o-printer') // Icon for the action
                     ->url(fn($record) => route('cetak.pemeriksaan-ibu', $record->id)) // URL to the PDF generation route
                     ->openUrlInNewTab() // Open the PDF in a new tab
                     ->color('success'),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

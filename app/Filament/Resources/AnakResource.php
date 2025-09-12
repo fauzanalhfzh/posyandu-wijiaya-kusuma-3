@@ -93,7 +93,7 @@ class AnakResource extends Resource
                 Action::make('cetak_pemeriksaan')
                     ->label('Cetak Pemeriksaan')
                     ->icon('heroicon-o-printer')
-                    ->url(fn(Anak $record) => route('cetak.pemeriksaan', ['id' => $record->id])) // Ganti dengan route cetak yang sesuai
+                    ->url(fn(Anak $record) => route('cetak.pemeriksaan-anak', ['id' => $record->id]))
                     ->openUrlInNewTab()
                     ->color('success'),
             ])
