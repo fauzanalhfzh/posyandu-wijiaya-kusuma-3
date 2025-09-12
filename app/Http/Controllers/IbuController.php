@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ibu;
 use Illuminate\Http\Request;
+use Mpdf\Mpdf;
 
 class IbuController extends Controller
 {
